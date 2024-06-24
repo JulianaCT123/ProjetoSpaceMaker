@@ -37,8 +37,7 @@ def jogar():
                     if not nome:
                         nome = (f"Desconhecido {evento.pos}")
                     estrelas[nome] = evento.pos
-                    print(estrelas)
-
+                    #print(estrelas)
                 elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_F1: # F1 para salvar
                     try:
                         arquivo = open("save.txt","w")
@@ -46,11 +45,28 @@ def jogar():
                         arquivo.close()
                     except:
                         pass
+                elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_F2: # F2 para carregar
+                    try:
+                        tela.fill(branco)
+                        arquivo = open("save.txt", "r")
+                        estrelas = eval(arquivo.read())
+                        arquivo.close()
+                    except:
+                         pass
+                elif evento.type == pygame.KEYDOWN and evento.key == pygame.K_F3: # F3 para excluir todas as marcaçõens
+                    estrelas = {}
+                    arquivo = open("save.txt","w")
+                    arquivo.write(str(estrelas))
+                    arquivo.close()
         
         tela.blit(fundo,(0,0))
         
-        textoSalvar = fonte.render("Aperte F1 para Salvar", True, branco)
+        textoSalvar = fonte.render("Aperte F1 para Salvar os pontos", True, branco)
         tela.blit(textoSalvar, (5,0))
+        textoCarregar = fonte.render("Aperte F2 para Carregar os pontos", True, branco)
+        tela.blit(textoCarregar,(5,15))
+        textoExcluir = fonte.render("Aperte F3 para Excluir todos os pontos", True, branco)
+        tela.blit(textoExcluir,(5,30))
 
         for key, value in estrelas.items():
                 textoNome = fonte.render(key,True,branco)
@@ -58,7 +74,7 @@ def jogar():
                 pygame.draw.circle(tela, branco, value, 5)
         teste = list(estrelas.values())
         for pos in range(len(teste) -1):
-                pygame.draw.line(tela,branco, teste[pos], teste[pos +1], 3)
+                pygame.draw.line(tela,branco, teste[pos], teste[pos +1], 1)
 
         pygame.display.update()
         clock.tick(60)
